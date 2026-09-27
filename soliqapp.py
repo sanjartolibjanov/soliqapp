@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import hmac
 import json
+import os
 import re
 import sqlite3
 import time
@@ -32,9 +33,12 @@ from aiogram.types import (
 # =========================================================
 
 BASE_DIR = Path(__file__).resolve().parent
-CONFIG_FILE = BASE_DIR / "eng"
 
+# Railway Environment Variables
+# BOT_TOKEN, ADMIN_ID, WEBAPP_URL, BOT_USERNAME
+# PORT Railway tomonidan avtomatik beriladi.
 DB_FILE = BASE_DIR / "soliqapp.db"
+PORT = int(os.getenv("PORT", "8080"))
 
 
 def _db():
@@ -628,56 +632,22 @@ def web_user(request):
     return user
 
 
-def load_config():
-    config = {}
-
-    if not CONFIG_FILE.exists():
-        raise FileNotFoundError(
-            "eng fayli topilmadi. "
-            "soliqapp.py bilan bir papkada 'eng' fayli bo‘lishi kerak."
-        )
-
-    with open(CONFIG_FILE, "r", encoding="utf-8") as file:
-        for line in file:
-            line = line.strip()
-
-            if not line:
-                continue
-
-            if line.startswith("#"):
-                continue
-
-            if "=" not in line:
-                continue
-
-            key, value = line.split("=", 1)
-
-            config[key.strip()] = value.strip()
-
-    return config
+def _env(name, default=""):
+    return os.getenv(name, default).strip()
 
 
-CONFIG = load_config()
-
-BOT_TOKEN = CONFIG.get("BOT_TOKEN", "").strip()
-ADMIN_ID_TEXT = CONFIG.get("ADMIN_ID", "").strip()
-WEBAPP_URL = CONFIG.get("WEBAPP_URL", "").strip()
-BOT_USERNAME = CONFIG.get(
-    "BOT_USERNAME",
-    "tap_keshbek_bot"
-).strip().lstrip("@")
+BOT_TOKEN = _env("BOT_TOKEN")
+ADMIN_ID_TEXT = _env("ADMIN_ID")
+WEBAPP_URL = _env("WEBAPP_URL")
+BOT_USERNAME = _env("BOT_USERNAME", "tap_keshbek_bot").lstrip("@")
 
 
 if not BOT_TOKEN:
-    raise ValueError(
-        "eng faylida BOT_TOKEN topilmadi."
-    )
+    raise ValueError("Railway Variables'da BOT_TOKEN kiritilmagan.")
 
 
 if not ADMIN_ID_TEXT.isdigit():
-    raise ValueError(
-        "eng faylida ADMIN_ID noto‘g‘ri."
-    )
+    raise ValueError("Railway Variables'da ADMIN_ID noto‘g‘ri yoki kiritilmagan.")
 
 
 ADMIN_ID = int(ADMIN_ID_TEXT)
@@ -1974,10 +1944,10 @@ async def serve_mini_app():
 
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, "0.0.0.0", 8080)
+    site = web.TCPSite(runner, "0.0.0.0", PORT)
     await site.start()
 
-    print("🌐 Mini App server: http://localhost:8080")
+    print(f"🌐 Mini App server: http://0.0.0.0:{PORT}")
     print("🌐 Cloudflare tunnel URL:", WEBAPP_URL or "SOZLANMAGAN")
 
     try:
