@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Soliq Keshbek</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ============================= -->
+    <!-- HEADER -->
+    <!-- ============================= -->
+
+    <header class="header">
+
+        <div class="profile-mini">
+
+            <div class="avatar">
+                <img src="logo.png">
+            </div>
+
+            <div>
+                <div class="welcome">
+                    Xush kelibsiz
+                </div>
+
+                <div class="username" id="username">
+                    Foydalanuvchi
+                </div>
+            </div>
+
+        </div>
+
+        <div class="notification">
+            🔔
+        </div>
+
+    </header>
+
+
+    <!-- ============================= -->
+    <!-- HOME -->
+    <!-- ============================= -->
+
+    <section
+        class="page active"
+        id="homePage"
+    >
+
+        <div class="balance-card">
+
+            <div class="balance-title">
+                Joriy balans
+            </div>
+
+            <div class="balance">
+                <span id="balance">
+                    0
+                </span>
+
+                <span class="coin">
+                    S
+                </span>
+            </div>
+
+            <div class="balance-bottom">
+
+                <div>
+                    Keshbek
+                </div>
+
+                <div class="level-small">
+                    Daraja <span id="levelSmall">1</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LEVEL -->
+
+        <div class="level-card">
+
+            <div class="level-header">
+
+                <div class="level-logo">
+
+                    <img src="logo.png">
+
+                </div>
+
+                <div>
+
+                    <div class="level-text">
+                        Daraja
+                    </div>
+
+                    <div class="level-number">
+                        <span id="level">1</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-area">
+
+                <div class="progress-info">
+
+                    <span>
+                        Dar. <span id="currentLevel">1</span>
+                    </span>
+
+                    <span id="progressPercent">
+                        0%
+                    </span>
+
+                    <span>
+                        Dar. <span id="nextLevel">2</span>
+                    </span>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="progressBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TAP -->
+
+
+        <div id="tapTutorial" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(2,10,28,.88);align-items:center;justify-content:center;padding:24px;">
+            <div style="width:100%;max-width:360px;background:#16213a;border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:28px 22px;text-align:center;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.45);">
+                <div style="font-size:24px;font-weight:800;margin-bottom:10px;">Keshbek ishlashni boshlang</div>
+                <div style="font-size:16px;line-height:1.5;color:#d7deed;margin-bottom:20px;">
+                    Shu logoni bosing.<br>
+                    Har bosganingizda <b style="color:#e5c2a8;">100 so‘m keshbek</b> olasiz!
+                </div>
+                <div style="font-size:54px;line-height:1;margin-bottom:20px;animation:tapGuidePulse 1s infinite;">👆</div>
+                <button type="button" onclick="closeTapTutorial()" style="width:100%;border:0;border-radius:15px;padding:14px;background:#e5c2a8;color:#132448;font-size:17px;font-weight:800;">
+                    Boshlash
+                </button>
+            </div>
+        </div>
+        <style>
+            @keyframes tapGuidePulse {
+                0%,100% { transform:translateY(0) scale(1); }
+                50% { transform:translateY(8px) scale(1.08); }
+            }
+        </style>
+
+<div class="tap-section">
+
+            <div class="tap-title">
+                Keshbek ishlang
+            </div>
+
+            <div
+                class="tap-circle"
+                id="tapButton"
+            >
+
+                <div class="tap-glow"></div>
+
+                <img
+                    src="logo.png"
+                    class="tap-logo"
+                >
+
+            </div>
+
+
+            <div class="tap-reward">
+                +<span id="tapReward">100</span> keshbek
+            </div>
+
+            <div class="tap-hint">
+                Logoni bosing
+            </div>
+
+        </div>
+
+
+        <!-- QUICK BUTTONS -->
+
+        <div class="quick-buttons">
+
+            <button
+                onclick="openPage('tasksPage')"
+            >
+                <span>📋</span>
+                Vazifalar
+            </button>
+
+            <button
+                onclick="openPage('friendsPage')"
+            >
+                <span>👥</span>
+                Do‘stlar
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- TASKS -->
+    <!-- ============================= -->
+
+    <section
+        class="page"
+        id="tasksPage"
+    >
+
+        <div class="page-title">
+            Vazifalar
+        </div>
+
+        <div class="page-subtitle">
+            Vazifalarni bajaring va so‘m keshbek oling
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-icon">
+                📢
+            </div>
+
+            <div class="task-content">
+
+                <div class="task-title">
+                    Telegram kanalga obuna bo‘ling
+                </div>
+
+                <div class="task-reward">
+                    +5 000 keshbek
+                </div>
+
+            </div>
+
+            <button class="task-button">
+                Bajarish
+            </button>
+
+        </div>
+
+
+        <div class="task-card">
+
+            <div class="task-icon">
+                👥
+            </div>
+
+            <div class="task-content">
+
+                <div class="task-title">
+                    Do‘stingizni taklif qiling
+                </div>
+
+                <div class="task-reward">
+                    +500 000 keshbek
+                </div>
+
+            </div>
+
+            <button
+                class="task-button"
+                onclick="openPage('friendsPage')"
+            >
+                Boshlash
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- FRIENDS -->
+    <!-- ============================= -->
+
+    <section
+        class="page"
+        id="friendsPage"
+    >
+
+        <div class="friends-hero">
+
+            <img
+                src="logo.png"
+                class="friends-logo"
+            >
+
+            <h1>
+                Do‘stlaringizni taklif qiling!
+            </h1>
+
+            <p>
+                Siz va do‘stlaringiz bonuslar olasiz
+            </p>
+
+        </div>
+
+
+        <div class="friend-info">
+
+            <div class="friend-icon">
+                🎁
+            </div>
+
+            <div>
+
+                <strong>
+                    Do‘stni taklif qilish
+                </strong>
+
+                <p>
+                    Har bir taklif qilingan do‘st uchun
+                    siz <b>500 000 keshbek</b> keshbek olasiz.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="vip-card">
+
+            <div class="vip-title">
+                👑 VIP imkoniyat
+            </div>
+
+            <div class="vip-text">
+                5 ta do‘stingizni taklif qiling
+                va maxsus VIP imkoniyatlarga ega bo‘ling!
+            </div>
+
+        </div>
+
+
+        <button
+            class="main-button"
+            onclick="shareReferral()"
+        >
+
+            👥 Do‘stni taklif qilish
+
+        </button>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- WITHDRAW -->
+    <!-- ============================= -->
+
+    <section
+        class="page"
+        id="withdrawPage"
+    >
+
+        <div class="page-title">
+            Keshbekni yechib olish
+        </div>
+
+        <div class="withdraw-card">
+
+            <div class="withdraw-icon">
+                💳
+            </div>
+
+            <div class="withdraw-title">
+                Mavjud balans
+            </div>
+
+            <div class="withdraw-balance">
+
+                <span id="withdrawBalance">
+                    0
+                </span>
+
+                <span class="coin">
+                    S
+                </span>
+
+            </div>
+
+
+            <input
+                class="input"
+                type="text"
+                placeholder="Karta raqamingizni kiriting"
+                id="cardInput"
+            >
+
+
+            <input
+                class="input"
+                type="number"
+                placeholder="Yechiladigan summa"
+                id="amountInput"
+            >
+
+
+            <button
+                class="main-button"
+                onclick="withdraw()"
+            >
+                💳 Keshbekni yechib olish
+            </button>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- PROFILE -->
+    <!-- ============================= -->
+
+    <section
+        class="page"
+        id="profilePage"
+    >
+
+        <div class="profile-big">
+
+            <div class="profile-avatar">
+
+                <img src="logo.png">
+
+            </div>
+
+            <h2 id="profileName">
+                Foydalanuvchi
+            </h2>
+
+            <div class="profile-level">
+                Daraja <span id="profileLevel">1</span>
+            </div>
+
+        </div>
+
+
+        <div class="profile-stat">
+
+            <div>
+                <span>Balans</span>
+                <strong id="profileBalance">
+                    0 keshbek
+                </strong>
+            </div>
+
+            <div>
+                <span>Tap</span>
+                <strong id="tapCount">
+                    0
+                </strong>
+            </div>
+
+            <div>
+                <span>Referral</span>
+                <strong id="refCount">
+                    0
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- BOTTOM NAV -->
+    <!-- ============================= -->
+
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-item active"
+            data-page="homePage"
+            onclick="openPage('homePage')"
+        >
+
+            <span>🪽</span>
+            <small>Bosh sahifa</small>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="tasksPage"
+            onclick="openPage('tasksPage')"
+        >
+
+            <span>☷</span>
+            <small>Vazifalar</small>
+
+        </button>
+
+
+        <button
+            class="nav-item tap-nav"
+            data-page="homePage"
+            onclick="openPage('homePage')"
+        >
+
+            <div class="nav-logo">
+                <img src="logo.png">
+            </div>
+
+            <small>Tap</small>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="friendsPage"
+            onclick="openPage('friendsPage')"
+        >
+
+            <span>👥</span>
+            <small>Do‘stlar</small>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="withdrawPage"
+            onclick="openPage('withdrawPage')"
+        >
+
+            <span>▣</span>
+            <small>Keshbek yechish</small>
+
+        </button>
+
+    </nav>
+
+</div>
+
+
+<script src="app.js?v=20260927-0550"></script>
+
+</body>
+
+</html>
+
