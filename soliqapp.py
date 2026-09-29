@@ -37,7 +37,7 @@ BASE_DIR = Path(__file__).resolve().parent
 # Railway Environment Variables
 # BOT_TOKEN, ADMIN_ID, WEBAPP_URL, BOT_USERNAME
 # PORT Railway tomonidan avtomatik beriladi.
-DB_FILE = BASE_DIR / "soliqapp.db"
+DB_FILE = Path("/data/soliqapp.db")
 PORT = int(os.getenv("PORT", "8080"))
 
 
